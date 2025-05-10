@@ -1,0 +1,133 @@
+const courseInfo = {
+  id: 451,
+  name: "Introduction to JavaScript",
+};
+// The provided assignment group.
+const assignmentGroup = {
+  id: 12345,
+  name: "Fundamentals of JavaScript",
+  course_id: 451,
+  group_weight: 25,
+  assignments: [
+    {
+      id: 1,
+      name: "Declare a Variable",
+      due_at: "2023-01-25",
+      points_possible: 50,
+    },
+    {
+      id: 2,
+      name: "Write a Function",
+      due_at: "2023-02-27",
+      points_possible: 150,
+    },
+    {
+      id: 3,
+      name: "Code the World",
+      due_at: "3156-11-15",
+      points_possible: 500,
+    },
+  ],
+};
+// The provided learner submission data.
+const learnerSubmissions = [
+  {
+    learner_id: 125,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 47,
+    },
+  },
+  {
+    learner_id: 125,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-02-12",
+      score: 150,
+    },
+  },
+  {
+    learner_id: 125,
+    assignment_id: 3,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 400,
+    },
+  },
+  {
+    learner_id: 132,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-24",
+      score: 39,
+    },
+  },
+  {
+    learner_id: 132,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-03-07",
+      score: 140,
+    },
+  },
+];
+
+function getLearnerData(courseInfo, assignmentGroup, learnerSubmissions) {
+  let studentIDs = learnerSubmissions.map((student) => {
+    return student.learner_id;
+  });
+  //   console.log(studentIDs);
+  // 1. first figure out who are the students ---LearnerSubmissions
+  // generate an array of unique students ids --- use map function on the learner submission array to create a copy.
+  let uniqueIDs = [];
+  for (let i = 0; i < studentIDs.length; i++) {
+    let currentStudentId = studentIDs[i];
+    if (uniqueIDs.indexOf(currentStudentId) === -1) {
+      uniqueIDs.push(currentStudentId);
+    }
+  }
+  // console.log(uniqueIDs)
+  // 2. convert it into array of object where you have a key called id
+  // then value be studentid -> [{id:125},{id:132}]
+  //   3. get the assignments and calulcate the grade
+  // find the assignment for each student and thier score
+  // -> [{id:125,1:47,2:150,3:400},{id:132,1:32,2:140}]
+  let students = uniqueIDs.map((idd) => {
+    let obj = {
+      id: idd,
+    };
+    return obj;
+  });
+  //   console.log(students);
+  learnerSubmissions.forEach((project) => {
+    let pupilId = project.learner_id; //unique student Id  ex: 125
+    let homework_id = project.assignment_id; //assignmentID
+    // console.log(homework_id)
+    let grade = project.submission.score; //score of students
+    // let submittedTime = project.submission.submitted_at; //what time the assingment was submitted.
+    students.forEach((pupil) => {
+      // students ex:[ { id: 125 }, { id: 132 } ], pupil ex: { id: 125 }
+      if (pupil.id === pupilId) {
+        pupil[homework_id] = grade;
+      }
+    });
+  });
+  // console.log(students)
+  let reference = students;
+  // console.log(reference);
+  // console.log(assignmentGroup.assignments)
+  // console.log(reference)
+  assignmentGroup.assignments.forEach((assignmentId, i) => {
+    //console.log(assignmentId.id)
+
+    reference.forEach((x) => {
+      console.log(x)
+      if (assignmentId.id === x.id) {
+        reference[i].maxScore = assignmentId.points_possible;
+      }
+    });
+  });
+  //console.log(reference);
+}
+getLearnerData(courseInfo, assignmentGroup, learnerSubmissions);
