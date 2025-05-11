@@ -110,8 +110,11 @@ const LearnerSubmissions = [
 
 
 
-function getLearnerData(course, ag, submissions) {
-  // Validate that the assignment group belongs to the course
+function getLearnerData(counrse, ang, sbubmissions) {
+  try{
+
+
+    // Validate that the assignment group belongs to the course
   if (ag.course_id !== course.id) {
     throw new Error("AssignmentGroup does not belong to the specified course.");
   }else{
@@ -180,10 +183,11 @@ function getLearnerData(course, ag, submissions) {
   }
 
   
-
+}catch(errorShown){
+  console.log(errorShown);
+  }
   
 }
-
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 console.log(result);
